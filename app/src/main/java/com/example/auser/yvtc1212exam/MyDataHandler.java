@@ -22,6 +22,7 @@ public class MyDataHandler extends DefaultHandler {
     public ArrayList<String> imgs = new ArrayList();
     public ArrayList<String> context = new ArrayList();
     StringBuilder titleTemp = new StringBuilder();
+
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
@@ -89,6 +90,21 @@ public class MyDataHandler extends DefaultHandler {
         String imgData;
         if (isImg && isItem)
         {
+//            String data = new String(ch, start, length);
+//            Log.d("DATA",data);
+//            if(data.indexOf("<p>") != -1){
+//
+//                String temp = data;
+//
+//                imgData = data.substring((data.indexOf("src='")+5),(data.indexOf("'>")));
+//                Log.d("ddd",imgData + "");
+//
+//                conData = temp.substring((temp.indexOf("</p><p>")+5),(temp.indexOf("</p>")));
+//                Log.d("dddd",conData + "");
+//            } else {
+//                conData = data;
+//            }
+
             String data = new String(ch, start, length);
             int imgStart = data.indexOf("='");
             int imgEnd = data.indexOf("'>");

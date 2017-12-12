@@ -19,17 +19,23 @@ import java.util.ArrayList;
 public class FireChat extends AppCompatActivity {
 
     DatabaseReference ref;
+
+    ArrayList arrayList1,arrayList2;
     EditText etSend;
     String str;
     ListView listView;
-    ArrayList arrayList,arrayList2;
     ArrayAdapter adapter;
+
+    boolean b;
     int count =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire_chat);
+
+        setTitle("Fire Chat");
+
         etSend = (EditText)findViewById(R.id.etSend);
         listView = (ListView) findViewById(R.id.listView_FireChat);
 
@@ -40,19 +46,19 @@ public class FireChat extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        arrayList = new ArrayList();
+        arrayList1 = new ArrayList();
         arrayList2 = new ArrayList();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                arrayList.clear();
+                arrayList1.clear();
                 arrayList2.clear();
                 for(DataSnapshot ds : dataSnapshot.child("Chat").getChildren()){
-                    arrayList.add(ds.getValue());
+                    arrayList1.add(ds.getValue());
                 }
-                if(arrayList.size()!=0) {
-                    for (int i = arrayList.size()-1; i > 0; i--) {
-                        arrayList2.add(arrayList.get(i));
+                if(arrayList1.size()!=0) {
+                    for (int i = arrayList1.size()-1; i > 0; i--) {
+                        arrayList2.add(arrayList1.get(i));
                     }
                 }
                 adapter = new ArrayAdapter(FireChat.this,android.R.layout.simple_list_item_1,arrayList2);
@@ -67,6 +73,7 @@ public class FireChat extends AppCompatActivity {
     }
 
     public void clickSend(View v){
+        b = false;
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,12 +82,15 @@ public class FireChat extends AppCompatActivity {
                     count++;
                 }
                 str = etSend.getText().toString();
-                if("".equals(str)){
-                    Toast.makeText(FireChat.this,"請勿空白",Toast.LENGTH_SHORT).show();
-                }else{
-                    ref.child("Chat").child(count+"").setValue(str);
-                    etSend.setText("");
-                    count=0;
+                if(!b) {
+                    if ("".equals(str)) {
+                        Toast.makeText(FireChat.this, "請輸入內文", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ref.child("Chat").child(count + "").setValue(str);
+                        etSend.setText("");
+                        count = 0;
+                    }
+                    b = true;
                 }
             }
 

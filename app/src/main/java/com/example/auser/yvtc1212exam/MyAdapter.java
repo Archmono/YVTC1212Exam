@@ -22,7 +22,6 @@ import com.squareup.picasso.Picasso;
 public class MyAdapter extends BaseAdapter {
     Context context;
     MyDataHandler dataHandler;
-    String[] str;
     public boolean[] b;
 
     public MyAdapter(Context context, MyDataHandler dataHandler) {
@@ -63,14 +62,13 @@ public class MyAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //final String msg = str[position];
-
         Log.d("imgUri", "position:" + position + dataHandler.titles.get(position));
         holder.tv.setText(dataHandler.titles.get(position));
         holder.tv2.setText(dataHandler.context.get(position));
         Log.d("imgUri", "position:" + position + dataHandler.imgs.get(position));
-//        if (!dataHandler.imgs.get(position).equals(""))
+
         Picasso.with(context).load(dataHandler.imgs.get(position)).into(holder.iv);
+
         return convertView;
     }
 

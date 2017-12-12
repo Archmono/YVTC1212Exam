@@ -35,6 +35,9 @@ public class NewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+
+        setTitle("UDN News");
+
         getData();
         lv = (ListView) findViewById(R.id.newsLv1);
         dataHandler = new MyDataHandler();
@@ -61,7 +64,7 @@ public class NewsActivity extends AppCompatActivity {
                     while((str = br.readLine()) != null)
                     {
                         sb.append(str);
-                        //sb.append("\n");
+                        sb.append("\n");
                     }
                     br.close();
                     isr.close();
