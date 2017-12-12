@@ -48,7 +48,11 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".NewsActivity"></activity>
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".DetailActivity" />
+        <activity android:name=".WebViewEX" />
+        <activity android:name=".activity_fire_chat" />
+        <activity android:name=".FireChat"></activity>
     </application>
 
 </manifest>

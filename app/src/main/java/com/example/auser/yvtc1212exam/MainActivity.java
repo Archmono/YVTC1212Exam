@@ -35,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnNews(View v){
         Intent it = new Intent();
-        it.setClass(MainActivity.this,MapsActivity.class);
+        it.setClass(MainActivity.this,NewsActivity.class);
         startActivity(it);
     }
 
     public void btnChat(View v){
         Intent it = new Intent();
-        it.setClass(MainActivity.this,MapsActivity.class);
+        it.setClass(MainActivity.this,FireChat.class);
         startActivity(it);
     }
 
