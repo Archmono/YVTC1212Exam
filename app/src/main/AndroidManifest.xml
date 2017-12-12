@@ -51,7 +51,7 @@
         <activity android:name=".NewsActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".WebViewEX" />
-        <activity android:name=".FireChat"></activity>
+        <activity android:name=".FireChat" />
     </application>
 
 </manifest>

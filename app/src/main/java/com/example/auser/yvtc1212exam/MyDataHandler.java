@@ -13,125 +13,102 @@ import java.util.ArrayList;
  */
 
 public class MyDataHandler extends DefaultHandler {
-    boolean isTitle = false;
-    boolean isLink = false;
-    boolean isItem = false;
-    boolean isImg = false;
+    boolean inTitle = false;
+    boolean inLink = false;
+    boolean inItem = false;
+    boolean inDesc = false;
     public ArrayList<String> titles = new ArrayList();
     public ArrayList<String> links = new ArrayList();
     public ArrayList<String> imgs = new ArrayList();
-    public ArrayList<String> context = new ArrayList();
-    StringBuilder titleTemp = new StringBuilder();
+    public ArrayList<String> desc = new ArrayList();
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
-        if (qName.equals("title"))
-        {
-            isTitle = true;
-        }
         if (qName.equals("item"))
         {
-            isItem = true;
+            inItem = true;
+        }
+        if (qName.equals("title"))
+        {
+            inTitle = true;
         }
         if (qName.equals("link"))
         {
-            isLink = true;
+            inLink = true;
         }
         if (qName.equals("description"))
         {
-            isImg = true;
+            inDesc = true;
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
-        if (qName.equals("title"))
-        {
-            if(isItem) {
-                titles.add(titleTemp.toString());
-                titleTemp = new StringBuilder();
-            }
-            isTitle = false;
-        }
         if (qName.equals("item"))
         {
-            isItem = false;
+            inItem = false;
+        }
+        if (qName.equals("title"))
+        {
+            inTitle = false;
         }
         if (qName.equals("link"))
         {
-            isLink = false;
+            inLink = false;
         }
         if (qName.equals("description"))
         {
-            isImg = false;
+            inDesc = false;
         }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         super.characters(ch, start, length);
-        if (isTitle && isItem)
+
+        if (inTitle && inItem)
         {
             String data = new String(ch, start, length);
             Log.d("MyTitle", data);
-            titleTemp.append(data);
-//            titles.add(data);
+            titles.add(data);
         }
-        if (isLink && isItem)
+
+        if (inLink && inItem)
         {
-            String data = new String(ch, start, length);
-            Log.d("MyLink", data);
-            links.add(data);
+            String linksData = new String(ch, start, length);
+            Log.d("MyLink", linksData);
+            links.add(linksData);
         }
 
         String conData;
         String imgData;
-        if (isImg && isItem)
+        if (inDesc && inItem)
         {
-//            String data = new String(ch, start, length);
-//            Log.d("DATA",data);
-//            if(data.indexOf("<p>") != -1){
-//
-//                String temp = data;
-//
-//                imgData = data.substring((data.indexOf("src='")+5),(data.indexOf("'>")));
-//                Log.d("ddd",imgData + "");
-//
-//                conData = temp.substring((temp.indexOf("</p><p>")+5),(temp.indexOf("</p>")));
-//                Log.d("dddd",conData + "");
-//            } else {
-//                conData = data;
-//            }
-
             String data = new String(ch, start, length);
-            int imgStart = data.indexOf("='");
-            int imgEnd = data.indexOf("'>");
+            Log.d("DATA",data);
+            if(data.indexOf("<p>") != -1){
+                String temp = data;
+                Log.d("ddda", temp + "");
 
-            int conStart = data.indexOf("<p>", imgEnd);
-            if (conStart == -1)
-                conStart = 0;
-            else
-                conStart+=3;
+                imgData = data.substring((data.indexOf("src='")+5),(data.indexOf("'>")));
+                Log.d("dddb",imgData + "");
 
-            Log.d("MyImg", imgStart+", "+imgEnd);
-            if (imgStart==-1 || imgEnd==-1) {
-                imgData = "R.drawable/mipmap/ic_launcher";
+                String temp2 = temp.substring((temp.indexOf("</p><p>")+7));
+//                Log.d("dddc", temp);
+                conData = temp2.substring(0,(temp2.indexOf("</p>")));
+
+                Log.d("dddc",conData + "");
+
+                imgs.add(imgData);
+                desc.add(conData);
             } else {
-                imgData = data.substring(imgStart+2, imgEnd - imgStart+2);
-                Log.d("MyImg", imgData);
+                String noPic = data;
+                Log.d("dddd", noPic + "");
+                imgs.add("R.drawable/por.png");
+                desc.add(noPic);
             }
-            imgs.add(imgData);
-
-            if(data.length()>63) {
-                conData = data.substring(conStart, conStart + 62);
-                Log.d("MyContext", conData);
-            } else {
-                conData = "Read more";
-            }
-//            Log.d("MyContext", conData);
-            context.add(conData);
         }
     }
 }

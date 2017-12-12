@@ -3,6 +3,7 @@ package com.example.auser.yvtc1212exam;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,12 +65,14 @@ public class NewsActivity extends AppCompatActivity {
                     while((str = br.readLine()) != null)
                     {
                         sb.append(str);
-                        sb.append("\n");
+//                        sb.append("\n");
+                        Log.d("readline", str);
                     }
                     br.close();
                     isr.close();
                     is.close();
                     String result = sb.toString();
+                    Log.d("Result", result);
 
                     SAXParserFactory spf = SAXParserFactory.newInstance();
                     SAXParser sp = spf.newSAXParser();

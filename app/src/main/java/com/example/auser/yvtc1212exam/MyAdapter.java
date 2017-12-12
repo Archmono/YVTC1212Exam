@@ -47,7 +47,7 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Log.d("GEIVEW", "position:" + position);
+        Log.d("GETVIEW", "position:" + position);
         ViewHolder holder;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
@@ -64,10 +64,10 @@ public class MyAdapter extends BaseAdapter {
 
         Log.d("imgUri", "position:" + position + dataHandler.titles.get(position));
         holder.tv.setText(dataHandler.titles.get(position));
-        holder.tv2.setText(dataHandler.context.get(position));
+        holder.tv2.setText(dataHandler.desc.get(position));
         Log.d("imgUri", "position:" + position + dataHandler.imgs.get(position));
 
-        Picasso.with(context).load(dataHandler.imgs.get(position)).into(holder.iv);
+        Picasso.with(context).load(dataHandler.imgs.get(position)).error(R.drawable.por).into(holder.iv);
 
         return convertView;
     }
