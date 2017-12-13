@@ -21,6 +21,10 @@ public class MyDataHandler extends DefaultHandler {
     public ArrayList<String> links = new ArrayList();
     public ArrayList<String> imgs = new ArrayList();
     public ArrayList<String> desc = new ArrayList();
+    StringBuilder titleTemp = new StringBuilder();
+    StringBuilder linkTemp = new StringBuilder();
+    StringBuilder descTemp = new StringBuilder();
+    StringBuilder imgTemp = new StringBuilder();
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -53,14 +57,41 @@ public class MyDataHandler extends DefaultHandler {
         if (qName.equals("title"))
         {
             inTitle = false;
+            if(inItem){
+                titles.add(titleTemp.toString());
+                titleTemp = new StringBuilder();
+            }
         }
         if (qName.equals("link"))
         {
             inLink = false;
+            if(inItem) {
+                links.add(linkTemp.toString());
+                linkTemp = new StringBuilder();
+            }
         }
         if (qName.equals("description"))
         {
             inDesc = false;
+            if(inItem) {
+                if (!(descTemp.indexOf("<p>") == -1)) {
+                    String temp = descTemp.toString();
+                    String imgData = temp.substring((temp.indexOf("src='") + 5), (temp.indexOf("'>")));
+
+                    String temp2 = temp.substring((temp.indexOf("</p><p>") + 7));
+
+                    String conData = temp2.substring(0, (temp2.indexOf("</p>")));
+
+                    imgs.add(imgData);
+                    desc.add(conData);
+                    descTemp = new StringBuilder();
+                } else {
+                    String noPic = descTemp.toString();
+                    imgs.add("R.drawable/por.png");
+                    desc.add(noPic);
+                    descTemp = new StringBuilder();
+                }
+            }
         }
     }
 
@@ -71,44 +102,19 @@ public class MyDataHandler extends DefaultHandler {
         if (inTitle && inItem)
         {
             String data = new String(ch, start, length);
-            Log.d("MyTitle", data);
-            titles.add(data);
+            titleTemp.append(data);
         }
 
         if (inLink && inItem)
         {
             String linksData = new String(ch, start, length);
-            Log.d("MyLink", linksData);
-            links.add(linksData);
+            linkTemp.append(linksData);
         }
 
-        String conData;
-        String imgData;
         if (inDesc && inItem)
         {
             String data = new String(ch, start, length);
-            Log.d("DATA",data);
-            if(data.indexOf("<p>") != -1){
-                String temp = data;
-                Log.d("ddda", temp + "");
-
-                imgData = data.substring((data.indexOf("src='")+5),(data.indexOf("'>")));
-                Log.d("dddb",imgData + "");
-
-                String temp2 = temp.substring((temp.indexOf("</p><p>")+7));
-//                Log.d("dddc", temp);
-                conData = temp2.substring(0,(temp2.indexOf("</p>")));
-
-                Log.d("dddc",conData + "");
-
-                imgs.add(imgData);
-                desc.add(conData);
-            } else {
-                String noPic = data;
-                Log.d("dddd", noPic + "");
-                imgs.add("R.drawable/por.png");
-                desc.add(noPic);
-            }
+            descTemp.append(data);
         }
     }
 }

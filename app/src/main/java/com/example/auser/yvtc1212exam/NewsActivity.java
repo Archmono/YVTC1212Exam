@@ -65,9 +65,9 @@ public class NewsActivity extends AppCompatActivity {
                     while((str = br.readLine()) != null)
                     {
                         sb.append(str);
-//                        sb.append("\n");
-                        Log.d("readline", str);
+                        sb.append("\r\n");
                     }
+                    System.out.println(sb.toString());
                     br.close();
                     isr.close();
                     is.close();
